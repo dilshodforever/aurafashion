@@ -16,7 +16,6 @@ type RegisterRequest struct {
 type VerifyEmail struct {
 	Email    string `json:"email"`
 	Otp      string `json:"otp"`
-	Platform string `json:"platform"`
 }
 
 type UserRegistr struct {
@@ -27,3 +26,4 @@ type UserRegistr struct {
 	Email       string `json:"email"`
 	Password    string `json:"password"`
 }
+

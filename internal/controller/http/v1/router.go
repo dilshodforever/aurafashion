@@ -43,13 +43,11 @@ func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useC
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization", "Authentication"},
 		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true, 
+		AllowCredentials: true,
 	}))
 
 	e := casbin.NewEnforcer("config/rbac.conf", "config/policy.csv")
 	engine.Use(handlerV1.AuthMiddleware(e))
-
-	
 
 	// Swagger
 	url := ginSwagger.URL("swagger/doc.json") // The url pointing to API definition
@@ -64,71 +62,53 @@ func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useC
 	// Routes
 	v1 := engine.Group("/v1")
 
-
-	user := v1.Group("/user")
 	{
-		user.POST("/user/", handlerV1.CreateUser)
-		//user.GET("/user/list", handlerV1.GetUsers)
-		user.GET("/user/:id", handlerV1.GetUser)
-		user.PUT("/user/", handlerV1.UpdateUser)
-		user.DELETE("/user/:id", handlerV1.DeleteUser)
+		//v1.GET("/user/list", handlerV1.GetUsers)
+		v1.GET("/user/:id", handlerV1.GetUser)
+		v1.PUT("/user/", handlerV1.UpdateUser)
+		v1.DELETE("/user/:id", handlerV1.DeleteUser)
 	}
 
-
-	
 	{
-		v1.POST("/auth/logout", handlerV1.Logout)
 		v1.POST("/auth/register", handlerV1.Register)
 		v1.POST("/auth/verify-email", handlerV1.VerifyEmail)
 		v1.POST("/auth/login", handlerV1.Login)
 	}
 
-	product := v1.Group("/product")
 	{
-		product.POST("/product/", handlerV1.CreateProduct)
-		product.PUT("/product", handlerV1.UpdateProduct)
-		product.DELETE("/product/:id", handlerV1.DeleteProduct)
-		product.GET("/product/list", handlerV1.ListProducts)
+		v1.POST("/product/", handlerV1.CreateProduct)
+		v1.PUT("/product", handlerV1.UpdateProduct)
+		v1.DELETE("/product/:id", handlerV1.DeleteProduct)
+		v1.GET("/product/list", handlerV1.ListProducts)
 		//product.GET("/product/:id", handlerV1.GetProduct)
-		product.POST("/product/picture", handlerV1.AddPicture)
-		product.DELETE("/product/picture", handlerV1.DeletePicture)
+		v1.POST("/product/picture", handlerV1.AddPicture)
+		v1.DELETE("/product/picture", handlerV1.DeletePicture)
 	}
 
-	basket := v1.Group("/basket")
+	
 	{
-		basket.POST("/basket/item", handlerV1.AddBasketItem)
-		basket.DELETE("/basket", handlerV1.DeleteBasket)
-		basket.DELETE("/basket/item", handlerV1.DeleteBasketItem)
-		basket.GET("/basket", handlerV1.GetBasket)
+		v1.POST("/basket/item", handlerV1.AddBasketItem)
+		v1.DELETE("/basket/", handlerV1.DeleteBasket)
+		v1.DELETE("/basket/item", handlerV1.DeleteBasketItem)
+		v1.GET("/basket", handlerV1.GetBasket)
 	}
 
-	order := v1.Group("/order")
+	
 	{
-		order.POST("/order", handlerV1.CreateOrder)
-		order.PUT("/order", handlerV1.UpdateOrder)
-		order.DELETE("/order/:id", handlerV1.DeleteOrder)
-		order.GET("/order/list", handlerV1.ListOrders)
+		v1.POST("/order", handlerV1.CreateOrder)
+		v1.PUT("/order", handlerV1.UpdateOrder)
+		v1.DELETE("/order/:id", handlerV1.DeleteOrder)
+		v1.GET("/order/list", handlerV1.ListOrders)
 		//order.GET("/order/:id", handlerV1.GetOrder)
-		order.GET("/order/products", handlerV1.SeeOrderProducts)
+		v1.GET("/order/products", handlerV1.SeeOrderProducts)
 	}
-	post := v1.Group("/post")
+	
 	{
-		post.POST("/post", handlerV1.CreatePost)
-		post.PUT("/post", handlerV1.UpdatePost)
-		post.DELETE("/post/:id", handlerV1.DeletePost)
-		post.GET("/post/list", handlerV1.ListPosts)
-		//post.GET("/post/:id", handlerV1.GetPost)
-		post.POST("/post/picture", handlerV1.AddPostPicture)
-		post.DELETE("/post/picture", handlerV1.DeletePostPicture)
+		v1.POST("/category", handlerV1.CreateCategory)
+		v1.GET("/category/:id", handlerV1.GetCategory)
+		v1.GET("/category/list", handlerV1.GetCategories)
+		v1.PUT("/category/:id", handlerV1.UpdateCategory)
+		v1.DELETE("/category/:id", handlerV1.DeleteCategory)
 	}
-	category := v1.Group("/category")
-	{
-		category.POST("/category", handlerV1.CreateCategory)
-		category.GET("/category/:id", handlerV1.GetCategory)
-		category.GET("/category/list", handlerV1.GetCategories)
-		category.PUT("/category/:id", handlerV1.UpdateCategory)
-		category.DELETE("/category/:id", handlerV1.DeleteCategory)
-	}
-
 
 }

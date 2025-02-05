@@ -35,8 +35,8 @@ func (r *OrderRepo) CreateOrder(ctx context.Context, order *entity.OrderCreateRe
 
 	query := `
 		INSERT INTO orders (
-			user_id, type, quantity, total_price, status, created_at, updated_at
-		) VALUES ($1, $2, $3, $4, $5, $6, $7)
+			user_id,  quantity, total_price, status, created_at, updated_at
+		) VALUES ($1, $2, $3, $4, $5, $6)
 		RETURNING id
 	`
 	now := time.Now()
@@ -45,7 +45,6 @@ func (r *OrderRepo) CreateOrder(ctx context.Context, order *entity.OrderCreateRe
 	err = r.db.Pool.QueryRow(
 		ctx, query,
 		order.UserID,
-		BasketResponse.Prtype,
 		BasketResponse.Count,
 		BasketResponse.TotalPrice,
 		"in_progres",
@@ -72,11 +71,6 @@ func (r *OrderRepo) UpdateOrder(ctx context.Context, order *entity.OrderUpt) err
 	args := []interface{}{time.Now()}
 	argID := 2
 
-	if order.Type != "" {
-		query += ", type = $" + strconv.Itoa(argID)
-		args = append(args, order.Type)
-		argID++
-	}
 	if order.Quantity > 0 {
 		query += ", quantity = $" + strconv.Itoa(argID)
 		args = append(args, order.Quantity)
@@ -122,18 +116,12 @@ func (r *OrderRepo) ListOrders(ctx context.Context, req *entity.OrderListsReq) (
 	var totalCount int
 
 	query := `
-		SELECT id, user_id, type, quantity, total_price, status, created_at, updated_at
+		SELECT id, user_id, quantity, total_price, status, created_at, updated_at
 		FROM orders
 		WHERE deleted_at IS NULL AND user_id = $1
 	`
 	args := []interface{}{req.UserID}
 	paramIdx := 2 // Start indexing from 2 because $1 is for user_id
-
-	if req.Prtype != "" {
-		query += fmt.Sprintf(" AND type = $%d", paramIdx)
-		args = append(args, req.Prtype)
-		paramIdx++
-	}
 
 	// Add pagination
 	if req.Filter.Limit != 0 {
@@ -158,7 +146,7 @@ func (r *OrderRepo) ListOrders(ctx context.Context, req *entity.OrderListsReq) (
 	for rows.Next() {
 		var order entity.Order
 		var createdAt, updatedAt time.Time
-		err := rows.Scan(&order.ID, &order.UserID, &order.Type, &order.Quantity, &order.TotalPrice, &order.Status, &createdAt, &updatedAt)
+		err := rows.Scan(&order.ID, &order.UserID,  &order.Quantity, &order.TotalPrice, &order.Status, &createdAt, &updatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan row: %w", err)
 		}
@@ -195,12 +183,12 @@ func (r *OrderRepo) GetOrder(ctx context.Context, req *entity.OrderGetReq) (*ent
 	var order entity.Order
 	var createdAt, updatedAt time.Time
 	query := `
-		SELECT id, user_id, item_id, type, quantity, total_price, status, created_at, updated_at
+		SELECT id, user_id, item_id,  quantity, total_price, status, created_at, updated_at
 		FROM orders
 		WHERE id = $1 AND deleted_at IS NULL
 	`
 	err := r.db.Pool.QueryRow(ctx, query, req.ID).
-		Scan(&order.ID, &order.UserID, &order.ItemID, &order.Type, &order.Quantity, &order.TotalPrice, &order.Status, &createdAt, &updatedAt)
+		Scan(&order.ID, &order.UserID, &order.ItemID,  &order.Quantity, &order.TotalPrice, &order.Status, &createdAt, &updatedAt)
 	if err != nil {
 		return nil, err
 	}

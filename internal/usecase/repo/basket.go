@@ -38,13 +38,13 @@ func (r *BasketRepo) AddBasketItem(ctx context.Context, item *entity.BasketItem)
 	}
 
 	// Calculate total price for the item
-	item.Price = price.Price * float64(item.Count)
+	item.Price = price * float64(item.Count)
 
 	// Insert the basket item into the database
-	query := `INSERT INTO basket_items (id, product_id, user_id, price, count, status, type)
-			  VALUES ($1, $2, $3, $4, $5, $6,$7)`
+	query := `INSERT INTO basket_items (id, product_id, user_id, price, count, status)
+			  VALUES ($1, $2, $3, $4, $5, $6)`
 
-	_, err = r.db.Pool.Exec(ctx, query, id, item.ProductID, item.UserId, item.Price, item.Count, "not_sold", price.Prtype)
+	_, err = r.db.Pool.Exec(ctx, query, id, item.ProductID, item.UserId, item.Price, item.Count, "not_sold")
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert basket item: %w", err)
 	}
@@ -92,19 +92,19 @@ func (r *BasketRepo) DeleteBasket(ctx context.Context, basket entity.BasketDelet
 	return nil
 }
 
-func (r *BasketRepo) GetProductPrice(ctx context.Context, Productid string) (*entity.Product_type, error) {
-	var product entity.Product_type
+func (r *BasketRepo) GetProductPrice(ctx context.Context, Productid string) (float64, error) {
+	var product_price float64
 	query := `
-			SELECT  price,product_type
+			SELECT  price
 			FROM products
 			WHERE id = $1 AND deleted_at IS NULL
 		`
 	err := r.db.Pool.QueryRow(ctx, query, Productid).
-		Scan(&product.Price, &product.Prtype)
+		Scan(&product_price)
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
-	return &product, nil
+	return product_price, nil
 }
 
 func (r *BasketRepo) GetBasket(ctx context.Context, userid string) (*entity.ListBasketItem, error) {
@@ -154,7 +154,7 @@ func (r *BasketRepo) GetBasket(ctx context.Context, userid string) (*entity.List
 }
 
 func GetBasketForResponse(ctx context.Context, r *postgres.Postgres, userId string) (*entity.BasketResponse, error) {
-	queryItems := `SELECT id,price, count,type FROM basket_items WHERE user_id = $1 AND status = 'not_sold'`
+	queryItems := `SELECT id,price, count FROM basket_items WHERE user_id = $1 AND status = 'not_sold'`
 
 	rows, err := r.Pool.Query(ctx, queryItems, userId)
 	if err != nil {
@@ -167,12 +167,11 @@ func GetBasketForResponse(ctx context.Context, r *postgres.Postgres, userId stri
 	for rows.Next() {
 		var price float64
 		var count int
-		var id, prtype string
-		err := rows.Scan(&id, &price, &count, &prtype)
+		var id string
+		err := rows.Scan(&id, &price, &count)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan row: %w", err)
 		}
-		items.Prtype = prtype
 		items.Count += count
 		items.TotalPrice += price
 		items.Id = append(items.Id, id)

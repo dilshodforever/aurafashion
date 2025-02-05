@@ -17,8 +17,6 @@ definitions:
         type: array
       price:
         type: number
-      prtype:
-        type: string
     type: object
   entity.CategoryId:
     properties:
@@ -89,10 +87,6 @@ definitions:
         type: string
       password:
         type: string
-      platform:
-        type: string
-      username:
-        type: string
     type: object
   entity.Order:
     properties:
@@ -107,8 +101,6 @@ definitions:
       status:
         type: string
       total_price:
-        type: string
-      type:
         type: string
       updatedAt:
         type: string
@@ -136,8 +128,6 @@ definitions:
         type: string
       total_price:
         type: number
-      type:
-        type: string
     type: object
   entity.Pagination:
     properties:
@@ -145,59 +135,6 @@ definitions:
         type: integer
       page:
         type: integer
-    type: object
-  entity.PostCreate:
-    properties:
-      content:
-        type: string
-      picture_urls:
-        type: string
-      title:
-        type: string
-    type: object
-  entity.PostGet:
-    properties:
-      content:
-        type: string
-      created_at:
-        type: string
-      id:
-        type: string
-      picture_urls:
-        items:
-          type: string
-        type: array
-      title:
-        type: string
-      updatedAt:
-        type: string
-    type: object
-  entity.PostList:
-    properties:
-      pagination:
-        $ref: '#/definitions/entity.Pagination'
-      posts:
-        items:
-          $ref: '#/definitions/entity.PostGet'
-        type: array
-      total_count:
-        type: integer
-    type: object
-  entity.PostPicture:
-    properties:
-      picture_url:
-        type: string
-      post_id:
-        type: string
-    type: object
-  entity.PostUpdate:
-    properties:
-      content:
-        type: string
-      id:
-        type: string
-      title:
-        type: string
     type: object
   entity.Product:
     properties:
@@ -220,11 +157,9 @@ definitions:
         type: string
       picture_url:
         type: string
-      prType:
-        type: string
       price:
         type: number
-      salePrice:
+      sale_price:
         type: number
       size:
         type: string
@@ -235,19 +170,25 @@ definitions:
     properties:
       category_id:
         type: string
+      color:
+        type: string
       description:
         type: string
       picture_url:
         type: string
-      prType:
-        type: string
       price:
         type: number
+      sale_price:
+        type: number
+      size:
+        type: string
       title:
         type: string
     type: object
   entity.ProductGet:
     properties:
+      color:
+        type: string
       created_at:
         type: string
       description:
@@ -260,6 +201,10 @@ definitions:
         type: array
       price:
         type: number
+      sale_price:
+        type: number
+      size:
+        type: string
       title:
         type: string
       updated_at:
@@ -285,12 +230,18 @@ definitions:
     type: object
   entity.ProductUpt:
     properties:
+      color:
+        type: string
       description:
         type: string
       id:
         type: string
       price:
         type: number
+      sale_price:
+        type: number
+      size:
+        type: string
       title:
         type: string
     type: object
@@ -391,8 +342,6 @@ definitions:
         type: string
       otp:
         type: string
-      platform:
-        type: string
     type: object
 info:
   contact: {}
@@ -426,27 +375,6 @@ paths:
       security:
       - BearerAuth: []
       summary: Login
-      tags:
-      - auth
-  /auth/logout:
-    post:
-      consumes:
-      - application/json
-      description: Logout
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.SuccessResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/entity.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Logout
       tags:
       - auth
   /auth/register:
@@ -906,185 +834,6 @@ paths:
       summary: Get products in an order
       tags:
       - order
-  /post:
-    post:
-      consumes:
-      - application/json
-      description: Create a new post
-      parameters:
-      - description: Post object
-        in: body
-        name: post
-        required: true
-        schema:
-          $ref: '#/definitions/entity.PostCreate'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/entity.PostCreate'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/entity.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new post
-      tags:
-      - post
-    put:
-      consumes:
-      - application/json
-      description: Update a post
-      parameters:
-      - description: Post object
-        in: body
-        name: post
-        required: true
-        schema:
-          $ref: '#/definitions/entity.PostUpdate'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.PostUpdate'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/entity.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update a post
-      tags:
-      - post
-  /post/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete a post by ID
-      parameters:
-      - description: Post ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.SuccessResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/entity.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete a post
-      tags:
-      - post
-  /post/list:
-    get:
-      consumes:
-      - application/json
-      description: Get a list of posts with filters
-      parameters:
-      - description: Page number
-        in: query
-        name: page
-        type: number
-      - description: Limit per page
-        in: query
-        name: limit
-        type: number
-      - description: Filter by post title
-        in: query
-        name: title
-        type: string
-      - description: Filter by created date (from)
-        in: query
-        name: created_from
-        type: string
-      - description: Filter by created date (to)
-        in: query
-        name: created_to
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.PostList'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/entity.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get a list of posts
-      tags:
-      - post
-  /post/picture:
-    delete:
-      consumes:
-      - application/json
-      description: Delete a picture URL from a post
-      parameters:
-      - description: Post picture URL
-        in: body
-        name: picture
-        required: true
-        schema:
-          $ref: '#/definitions/entity.PostPicture'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.SuccessResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/entity.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete a picture from a post
-      tags:
-      - post
-    post:
-      consumes:
-      - application/json
-      description: Add a picture URL to a post
-      parameters:
-      - description: Post picture URL
-        in: body
-        name: picture
-        required: true
-        schema:
-          $ref: '#/definitions/entity.PostPicture'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.PostPicture'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/entity.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Add a picture to a post
-      tags:
-      - post
   /product:
     post:
       consumes:
@@ -1391,33 +1140,6 @@ paths:
       tags:
       - session
   /user:
-    post:
-      consumes:
-      - application/json
-      description: Create a new user
-      parameters:
-      - description: User object
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/entity.User'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/entity.User'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/entity.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new user
-      tags:
-      - user
     put:
       consumes:
       - application/json
@@ -1428,7 +1150,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/entity.User'
+          $ref: '#/definitions/entity.RegisterRequest'
       produces:
       - application/json
       responses:
@@ -1450,12 +1172,6 @@ paths:
       consumes:
       - application/json
       description: Delete a user
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -1476,12 +1192,6 @@ paths:
       consumes:
       - application/json
       description: Get a user by ID
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
       produces:
       - application/json
       responses:

@@ -15,7 +15,6 @@ type OrderGetRes struct {
 
 type OrderUpt struct {
 	ID   string  `json:"id"`
-	Type      string `json:"type"`
 	Quantity  int32  `json:"quantity"`
 	TotalPrice float32 `json:"total_price"`
 	Status    string `json:"status"`
@@ -28,7 +27,6 @@ type OrderDeleteReq struct {
 type OrderListsReq struct {
 	UserID  string     `json:"user_id"`
 	Filter  Pagination `json:"filter"`
-	Prtype    string   `json:"type"`
 }
 
 type OrderListsRes struct {
@@ -41,7 +39,6 @@ type Order struct {
 	ID         string `json:"id"`
 	UserID     string `json:"user_id"`
 	ItemID     string `json:"item_id"`
-	Type       string `json:"type"`
 	Quantity   int32  `json:"quantity"`
 	TotalPrice string `json:"total_price"`
 	Status     string `json:"status"`

@@ -8,41 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// CreateUser godoc
-// @Router /user [post]
-// @Summary Create a new user
-// @Description Create a new user
-// @Security BearerAuth
-// @Tags user
-// @Accept  json
-// @Produce  json
-// @Param user body entity.User true "User object"
-// @Success 201 {object} entity.User
-// @Failure 400 {object} entity.ErrorResponse
-func (h *Handler) CreateUser(ctx *gin.Context) {
-	var (
-		body entity.User
-	)
 
-	err := ctx.ShouldBindJSON(&body)
-	if err != nil {
-		h.ReturnError(ctx, config.ErrorBadRequest, "Invalid request body", 400)
-		return
-	}
-
-	body.Password, err = hash.HashPassword(body.Password)
-	if err != nil {
-		h.ReturnError(ctx, config.ErrorBadRequest, "Error hashing password", 400)
-		return
-	}
-
-	user, err := h.UseCase.UserRepo.Create(ctx, body)
-	if h.HandleDbError(ctx, err, "Error creating user") {
-		return
-	}
-
-	ctx.JSON(201, user)
-}
 
 // GetUser godoc
 // @Router /user/{id} [get]
@@ -52,15 +18,17 @@ func (h *Handler) CreateUser(ctx *gin.Context) {
 // @Tags user
 // @Accept  json
 // @Produce  json
-// @Param id path string true "User ID"
 // @Success 200 {object} entity.User
 // @Failure 400 {object} entity.ErrorResponse
 func (h *Handler) GetUser(ctx *gin.Context) {
 	var (
 		req entity.UserSingleRequest
 	)
-
-	req.ID = ctx.Param("id")
+	UserId,code:=h.GetIdFromToken(ctx)
+	if code!=0{
+		h.ReturnError(ctx, config.ErrorUnauthorized, "Unauthorized", code)
+	}
+	req.ID=UserId
 
 	user, err := h.UseCase.UserRepo.GetSingle(ctx, req)
 	if h.HandleDbError(ctx, err, "Error getting user") {
@@ -135,7 +103,7 @@ func (h *Handler) GetUser(ctx *gin.Context) {
 // @Tags user
 // @Accept  json
 // @Produce  json
-// @Param user body entity.User true "User object"
+// @Param user body entity.RegisterRequest true "User object"
 // @Success 200 {object} entity.UserUpdate
 // @Failure 400 {object} entity.ErrorResponse
 func (h *Handler) UpdateUser(ctx *gin.Context) {
@@ -177,19 +145,18 @@ func (h *Handler) UpdateUser(ctx *gin.Context) {
 // @Tags user
 // @Accept  json
 // @Produce  json
-// @Param id path string true "User ID"
 // @Success 200 {object} entity.SuccessResponse
 // @Failure 400 {object} entity.ErrorResponse
 func (h *Handler) DeleteUser(ctx *gin.Context) {
 	var (
 		req entity.Id
 	)
-
-	req.ID = ctx.Param("id")
-
-	if ctx.GetHeader("user_type") == "user" {
-		req.ID = ctx.GetHeader("sub")
+	UserId,code:=h.GetIdFromToken(ctx)
+	if code!=0{
+		h.ReturnError(ctx, config.ErrorUnauthorized, "Unauthorized", code)
 	}
+	req.ID = UserId
+
 
 	err := h.UseCase.UserRepo.Delete(ctx, req)
 	if h.HandleDbError(ctx, err, "Error deleting user") {

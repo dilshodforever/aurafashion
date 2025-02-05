@@ -82,34 +82,34 @@ func (h *Handler) Login(ctx *gin.Context) {
 	ctx.JSON(200, user)
 }
 
-// Logout godoc
-// @Router /auth/logout [post]
-// @Summary Logout
-// @Description Logout
-// @Security BearerAuth
-// @Tags auth
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} entity.SuccessResponse
-// @Failure 400 {object} entity.ErrorResponse
-func (h *Handler) Logout(ctx *gin.Context) {
-	sessionID := ctx.GetHeader("session_id")
-	if sessionID == "" {
-		h.ReturnError(ctx, config.ErrorBadRequest, "Invalid session ID", 400)
-		return
-	}
+// // Logout godoc
+// // @Router /auth/logout [post]
+// // @Summary Logout
+// // @Description Logout
+// // @Security BearerAuth
+// // @Tags auth
+// // @Accept  json
+// // @Produce  json
+// // @Success 200 {object} entity.SuccessResponse
+// // @Failure 400 {object} entity.ErrorResponse
+// func (h *Handler) Logout(ctx *gin.Context) {
+// 	sessionID := ctx.GetHeader("session_id")
+// 	if sessionID == "" {
+// 		h.ReturnError(ctx, config.ErrorBadRequest, "Invalid session ID", 400)
+// 		return
+// 	}
 
-	err := h.UseCase.SessionRepo.Delete(ctx, entity.Id{
-		ID: sessionID,
-	})
-	if h.HandleDbError(ctx, err, "Error deleting session") {
-		return
-	}
+// 	err := h.UseCase.SessionRepo.Delete(ctx, entity.Id{
+// 		ID: sessionID,
+// 	})
+// 	if h.HandleDbError(ctx, err, "Error deleting session") {
+// 		return
+// 	}
 
-	ctx.JSON(200, entity.SuccessResponse{
-		Message: "Successfully logged out",
-	})
-}
+// 	ctx.JSON(200, entity.SuccessResponse{
+// 		Message: "Successfully logged out",
+// 	})
+// }
 
 // Register godoc
 // @Router /auth/register [post]
@@ -259,20 +259,20 @@ func (h *Handler) VerifyEmail(ctx *gin.Context) {
 		UserAgent:    ctx.Request.UserAgent(),
 		IsActive:     true,
 		LastActiveAt: time.Now().Format(time.RFC3339),
-		Platform:     body.Platform,
 	}
 
 	session, err := h.UseCase.SessionRepo.Create(ctx, newSession)
 	if h.HandleDbError(ctx, err, "Error while creating new session") {
 		return
 	}
-
+	fmt.Println(1111,user.UserRole)
 	// generate jwt token
 	jwtFields := map[string]interface{}{
 		"sub":        user.ID,
 		"user_role":  user.UserRole,
 		"session_id": session.ID,
 	}
+
 
 	user.AccessToken, err = jwt.GenerateJWT(jwtFields, h.Config.JWT.Secret)
 	if err != nil {

@@ -60,40 +60,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/logout": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Logout",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "Logout",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/entity.SuccessResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/entity.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/auth/register": {
             "post": {
                 "security": [
@@ -818,291 +784,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/post": {
-            "put": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Update a post",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "post"
-                ],
-                "summary": "Update a post",
-                "parameters": [
-                    {
-                        "description": "Post object",
-                        "name": "post",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entity.PostUpdate"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/entity.PostUpdate"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/entity.ErrorResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Create a new post",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "post"
-                ],
-                "summary": "Create a new post",
-                "parameters": [
-                    {
-                        "description": "Post object",
-                        "name": "post",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entity.PostCreate"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/entity.PostCreate"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/entity.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/post/list": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Get a list of posts with filters",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "post"
-                ],
-                "summary": "Get a list of posts",
-                "parameters": [
-                    {
-                        "type": "number",
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "number",
-                        "description": "Limit per page",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by post title",
-                        "name": "title",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by created date (from)",
-                        "name": "created_from",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by created date (to)",
-                        "name": "created_to",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/entity.PostList"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/entity.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/post/picture": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Add a picture URL to a post",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "post"
-                ],
-                "summary": "Add a picture to a post",
-                "parameters": [
-                    {
-                        "description": "Post picture URL",
-                        "name": "picture",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entity.PostPicture"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/entity.PostPicture"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/entity.ErrorResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Delete a picture URL from a post",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "post"
-                ],
-                "summary": "Delete a picture from a post",
-                "parameters": [
-                    {
-                        "description": "Post picture URL",
-                        "name": "picture",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entity.PostPicture"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/entity.SuccessResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/entity.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/post/{id}": {
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Delete a post by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "post"
-                ],
-                "summary": "Delete a post",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Post ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/entity.SuccessResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/entity.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/product": {
             "put": {
                 "security": [
@@ -1611,7 +1292,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entity.User"
+                            "$ref": "#/definitions/entity.RegisterRequest"
                         }
                     }
                 ],
@@ -1620,49 +1301,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entity.UserUpdate"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/entity.ErrorResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Create a new user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "Create a new user",
-                "parameters": [
-                    {
-                        "description": "User object",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entity.User"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/entity.User"
                         }
                     },
                     "400": {
@@ -1692,15 +1330,6 @@ const docTemplate = `{
                     "user"
                 ],
                 "summary": "Get a user by ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1733,15 +1362,6 @@ const docTemplate = `{
                     "user"
                 ],
                 "summary": "Delete a user",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1785,9 +1405,6 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "number"
-                },
-                "prtype": {
-                    "type": "string"
                 }
             }
         },
@@ -1897,12 +1514,6 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string"
-                },
-                "platform": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
                 }
             }
         },
@@ -1925,9 +1536,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "total_price": {
-                    "type": "string"
-                },
-                "type": {
                     "type": "string"
                 },
                 "updatedAt": {
@@ -1969,9 +1577,6 @@ const docTemplate = `{
                 },
                 "total_price": {
                     "type": "number"
-                },
-                "type": {
-                    "type": "string"
                 }
             }
         },
@@ -1983,88 +1588,6 @@ const docTemplate = `{
                 },
                 "page": {
                     "type": "integer"
-                }
-            }
-        },
-        "entity.PostCreate": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "picture_urls": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "entity.PostGet": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "picture_urls": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "entity.PostList": {
-            "type": "object",
-            "properties": {
-                "pagination": {
-                    "$ref": "#/definitions/entity.Pagination"
-                },
-                "posts": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/entity.PostGet"
-                    }
-                },
-                "total_count": {
-                    "type": "integer"
-                }
-            }
-        },
-        "entity.PostPicture": {
-            "type": "object",
-            "properties": {
-                "picture_url": {
-                    "type": "string"
-                },
-                "post_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "entity.PostUpdate": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
                 }
             }
         },
@@ -2100,13 +1623,10 @@ const docTemplate = `{
                 "picture_url": {
                     "type": "string"
                 },
-                "prType": {
-                    "type": "string"
-                },
                 "price": {
                     "type": "number"
                 },
-                "salePrice": {
+                "sale_price": {
                     "type": "number"
                 },
                 "size": {
@@ -2123,17 +1643,23 @@ const docTemplate = `{
                 "category_id": {
                     "type": "string"
                 },
+                "color": {
+                    "type": "string"
+                },
                 "description": {
                     "type": "string"
                 },
                 "picture_url": {
                     "type": "string"
                 },
-                "prType": {
-                    "type": "string"
-                },
                 "price": {
                     "type": "number"
+                },
+                "sale_price": {
+                    "type": "number"
+                },
+                "size": {
+                    "type": "string"
                 },
                 "title": {
                     "type": "string"
@@ -2143,6 +1669,9 @@ const docTemplate = `{
         "entity.ProductGet": {
             "type": "object",
             "properties": {
+                "color": {
+                    "type": "string"
+                },
                 "created_at": {
                     "type": "string"
                 },
@@ -2160,6 +1689,12 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "number"
+                },
+                "sale_price": {
+                    "type": "number"
+                },
+                "size": {
+                    "type": "string"
                 },
                 "title": {
                     "type": "string"
@@ -2200,6 +1735,9 @@ const docTemplate = `{
         "entity.ProductUpt": {
             "type": "object",
             "properties": {
+                "color": {
+                    "type": "string"
+                },
                 "description": {
                     "type": "string"
                 },
@@ -2208,6 +1746,12 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "number"
+                },
+                "sale_price": {
+                    "type": "number"
+                },
+                "size": {
+                    "type": "string"
                 },
                 "title": {
                     "type": "string"
@@ -2359,9 +1903,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "otp": {
-                    "type": "string"
-                },
-                "platform": {
                     "type": "string"
                 }
             }

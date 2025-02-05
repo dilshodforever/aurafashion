@@ -1,32 +1,36 @@
 package entity
 
 type ProductCreate struct {
-	Id          string `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Price       float32 `json:"price"`
-	SalePrice   float32 
-	Color       string
-	Size 		string
-	PictureUrl  string `json:"picture_url"`
-	Category_id string `json:"category_id"`
-	PrType      string
+	Id          string  `json:"id"`
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	Price       float64 `json:"price"`
+	SalePrice   float64 `json:"sale_price"`
+	Color       string  `json:"color"`
+	Size        string  `json:"size"`
+	PictureUrl  string  `json:"picture_url"`
+	CategoryID string  `json:"category_id"`
 }
 
 type ProductCreateForSwagger struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Price       float32 `json:"price"`
-	PictureUrl  string `json:"picture_url"`
-	Category_id string `json:"category_id"`
-	PrType      string
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	Price       float64 `json:"price"`
+	PictureUrl  string  `json:"picture_url"`
+	CategoryID string  `json:"category_id"`
+	SalePrice   float64 `json:"sale_price"`
+	Color       string  `json:"color"`
+	Size        string  `json:"size"`
 }
 
 type ProductUpt struct {
 	Id          string  `json:"id"`
 	Title       string  `json:"title"`
 	Description string  `json:"description"`
-	Price       float32 `json:"price"`
+	Price       float64 `json:"price"`
+	SalePrice   float64 `json:"sale_price"`
+	Color       string  `json:"color"`
+	Size        string  `json:"size"`
 }
 
 type ProductPicture struct {
@@ -35,22 +39,25 @@ type ProductPicture struct {
 }
 
 type ProductGet struct {
-	Id          string   `json:"id"`
-	Title       string   `json:"title"`
-	Description string   `json:"description"`
-	Price       float64  `json:"price"`
-	PictureUrls []string `json:"picture_urls"`
-	CreatedAt   string   `json:"created_at"`
-	UpdatedAt   string   `json:"updated_at"`
+	Id          string  `json:"id"`
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	Price       float64 `json:"price"`
+	SalePrice   float64 `json:"sale_price"`
+	Color       string  `json:"color"`
+	Size        string  `json:"size"`
+	PictureUrls []string`json:"picture_urls"`
+	CreatedAt   string  `json:"created_at"`
+	UpdatedAt   string  `json:"updated_at"`
 }
 
 type ProductFilter struct {
-	Title      string    `json:"title"`
-	PriceFrom  float64   `json:"price_from"`
-	PriceTo    float64   `json:"price_to"`
-	Pagination Pagination `json:"pagination"`
-	Category_id string   `json:"category_id"`
-	PrType      string   `json:"type"`
+	Title       string     `json:"title"`
+	PriceFrom   float64    `json:"price_from"`
+	PriceTo     float64    `json:"price_to"`
+	Pagination  Pagination `json:"pagination"`
+	Category_id string     `json:"category_id"`
+	PrType      string     `json:"type"`
 }
 
 type ProductList struct {
@@ -62,11 +69,6 @@ type ProductList struct {
 type Pagination struct {
 	Page  int `json:"page"`
 	Limit int `json:"limit"`
-}
-
-type Product_type struct {
-	Prtype string  `json:"prtype"`
-	Price  float64 `json:"price"`
 }
 
 type Product struct {

@@ -15,7 +15,6 @@ type BasketResponse struct{
 	Id  	    []string 	
 	TotalPrice  float64 `json:"price"`
 	Count       int     `json:"count"`
-	Prtype      string
 }
 
 

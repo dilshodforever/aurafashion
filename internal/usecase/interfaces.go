@@ -49,15 +49,6 @@ type (
 		SeeOrderProducts(ctx context.Context, orderid string) ([]*entity.ProductGet, error)
 	}
 
-	PostRepoI interface {
-		CreatePost(ctx context.Context, post *entity.PostCreate) error
-		UpdatePost(ctx context.Context, post *entity.PostUpdate) error
-		DeletePost(ctx context.Context, postID string) error
-		GetPosts(ctx context.Context, filter *entity.PostFilter) (*entity.PostList, error)
-		GetPost(ctx context.Context, postID string) (*entity.PostGet, error)
-		AddPostPicture(ctx context.Context, postpic *entity.PostPicture) error
-		DeletePostPicture(ctx context.Context, postpic *entity.PostPicture) error
-	}
 
 	BasketRepoI interface {
 		AddBasketItem(ctx context.Context, item *entity.BasketItem) (*entity.BasketResponse, error)

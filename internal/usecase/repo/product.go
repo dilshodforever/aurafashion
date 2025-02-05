@@ -31,11 +31,11 @@ func NewProductRepo(pg *postgres.Postgres, config *config.Config, logger *logger
 func (r *ProductRepo) CreateProduct(ctx context.Context, product *entity.ProductCreate) (string, error) {
 	id := uuid.NewString()
 	query := `
-			INSERT INTO products (id,category_id,title, product_type, description, price,  created_at, updated_at, deleted_at)
-			VALUES ($1, $2, $3, $4, $5, $6,$7,$8,$9) 
-		`
+		INSERT INTO products (id, category_id, title, description, price, sale_price, color, product_size, created_at, updated_at, deleted_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+	`
 	now := time.Now()
-	_, err := r.db.Pool.Exec(ctx, query, id, product.Category_id, product.Title, product.PrType, product.Description, product.Price, now, now, nil)
+	_, err := r.db.Pool.Exec(ctx, query, id, product.CategoryID, product.Title, product.Description, product.Price, product.SalePrice, product.Color, product.Size, now, now, nil)
 	if err != nil {
 		return "", err
 	}
@@ -59,6 +59,24 @@ func (r *ProductRepo) UpdateProduct(ctx context.Context, product *entity.Product
 		args = append(args, product.Description)
 		argID++
 	}
+	if product.Size != "" {
+		query += fmt.Sprintf("product_size = $%d, ", argID)
+		args = append(args, product.Size)
+		argID++
+	}
+	
+	if product.SalePrice != 0 {
+		query += fmt.Sprintf("sale_price = $%d, ", argID)
+		args = append(args, product.SalePrice)
+		argID++
+	}
+	
+	if product.Color != "" {
+		query += fmt.Sprintf("color = $%d, ", argID)
+		args = append(args, product.Color)
+		argID++
+	}
+	
 	if product.Price != 0.0 {
 		query += fmt.Sprintf("price = $%d, ", argID)
 		args = append(args, product.Price)
@@ -108,7 +126,7 @@ func (r *ProductRepo) ListProducts(ctx context.Context, filter *entity.ProductFi
 	var totalCount int
 
 	query := `
-			SELECT id, title, description, price, created_at, updated_at
+			SELECT id, title, description, price, sale_price, color, product_size,created_at, updated_at
 			FROM products
 			WHERE deleted_at IS NULL AND product_type = $1
 		`
@@ -157,7 +175,8 @@ func (r *ProductRepo) ListProducts(ctx context.Context, filter *entity.ProductFi
 		var product entity.ProductGet
 		var createdAt, updatedAt time.Time
 
-		err := rows.Scan(&product.Id, &product.Title, &product.Description, &product.Price, &createdAt, &updatedAt)
+		err := rows.Scan(&product.Id, &product.Title, &product.Description, &product.Price, 
+			&product.SalePrice, &product.Color, &product.Size,&createdAt, &updatedAt)
 		if err != nil {
 			return nil, err
 		}

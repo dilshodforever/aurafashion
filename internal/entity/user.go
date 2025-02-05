@@ -35,3 +35,5 @@ type UserUpdate struct {
 	PhoneNumber string    `json:"phone_number"`
 	Password    string    `json:"password,omitempty"` // Ommaviy ko‘rinmasligi uchun
 }
+
+

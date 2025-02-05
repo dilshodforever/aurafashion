@@ -59,7 +59,7 @@ func (r *SessionRepo) GetSingle(ctx context.Context, req entity.Id) (entity.Sess
 	)
 
 	qeuryBuilder := r.pg.Builder.
-		Select(`id, user_id, ip_address, user_agent, is_active, expires_at, last_active_at, platform, created_at, updated_at`).
+		Select(`id, user_id, ip_address, user_agent, is_active, expires_at, last_active_at, created_at, updated_at`).
 		From("session").Where("id = ?", req.ID)
 
 	qeury, args, err := qeuryBuilder.ToSql()
@@ -69,7 +69,7 @@ func (r *SessionRepo) GetSingle(ctx context.Context, req entity.Id) (entity.Sess
 
 	err = r.pg.Pool.QueryRow(ctx, qeury, args...).
 		Scan(&response.ID, &response.UserID, &response.IPAddress, &response.UserAgent,
-			&response.IsActive, &expiresAt, &lastActiveAt, &response.Platform, &createdAt, &updatedAt)
+			&response.IsActive, &expiresAt, &lastActiveAt, &createdAt, &updatedAt)
 	if err != nil {
 		return entity.Session{}, err
 	}
