@@ -1,0 +1,1506 @@
+basePath: /v1
+definitions:
+  entity.BasketItemForSwagger:
+    properties:
+      count:
+        type: integer
+      product_id:
+        type: string
+    type: object
+  entity.BasketResponse:
+    properties:
+      count:
+        type: integer
+      id:
+        items:
+          type: string
+        type: array
+      price:
+        type: number
+      prtype:
+        type: string
+    type: object
+  entity.CategoryId:
+    properties:
+      id:
+        type: string
+    type: object
+  entity.CategoryListsRes:
+    properties:
+      Categorys:
+        items:
+          $ref: '#/definitions/entity.CategoryRes'
+        type: array
+      total_count:
+        type: integer
+    type: object
+  entity.CategoryRes:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.CategoryUptBody:
+    properties:
+      name:
+        type: string
+    type: object
+  entity.ErrorResponse:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    type: object
+  entity.ListBasketItem:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.ListItem'
+        type: array
+      total_count:
+        type: integer
+      total_price:
+        type: number
+    type: object
+  entity.ListItem:
+    properties:
+      count:
+        type: integer
+      id:
+        type: string
+      pictures:
+        items:
+          type: string
+        type: array
+      price:
+        type: number
+      product:
+        $ref: '#/definitions/entity.Product'
+    type: object
+  entity.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      platform:
+        type: string
+      username:
+        type: string
+    type: object
+  entity.Order:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: string
+      item_id:
+        type: string
+      quantity:
+        type: integer
+      status:
+        type: string
+      total_price:
+        type: string
+      type:
+        type: string
+      updatedAt:
+        type: string
+      user_id:
+        type: string
+    type: object
+  entity.OrderListsRes:
+    properties:
+      orders:
+        items:
+          $ref: '#/definitions/entity.Order'
+        type: array
+      pagination:
+        $ref: '#/definitions/entity.Pagination'
+      total_count:
+        type: integer
+    type: object
+  entity.OrderUpt:
+    properties:
+      id:
+        type: string
+      quantity:
+        type: integer
+      status:
+        type: string
+      total_price:
+        type: number
+      type:
+        type: string
+    type: object
+  entity.Pagination:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+    type: object
+  entity.PostCreate:
+    properties:
+      content:
+        type: string
+      picture_urls:
+        type: string
+      title:
+        type: string
+    type: object
+  entity.PostGet:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      picture_urls:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  entity.PostList:
+    properties:
+      pagination:
+        $ref: '#/definitions/entity.Pagination'
+      posts:
+        items:
+          $ref: '#/definitions/entity.PostGet'
+        type: array
+      total_count:
+        type: integer
+    type: object
+  entity.PostPicture:
+    properties:
+      picture_url:
+        type: string
+      post_id:
+        type: string
+    type: object
+  entity.PostUpdate:
+    properties:
+      content:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+    type: object
+  entity.Product:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+    type: object
+  entity.ProductCreate:
+    properties:
+      category_id:
+        type: string
+      color:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      picture_url:
+        type: string
+      prType:
+        type: string
+      price:
+        type: number
+      salePrice:
+        type: number
+      size:
+        type: string
+      title:
+        type: string
+    type: object
+  entity.ProductCreateForSwagger:
+    properties:
+      category_id:
+        type: string
+      description:
+        type: string
+      picture_url:
+        type: string
+      prType:
+        type: string
+      price:
+        type: number
+      title:
+        type: string
+    type: object
+  entity.ProductGet:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      picture_urls:
+        items:
+          type: string
+        type: array
+      price:
+        type: number
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.ProductList:
+    properties:
+      pagination:
+        $ref: '#/definitions/entity.Pagination'
+      products:
+        items:
+          $ref: '#/definitions/entity.ProductGet'
+        type: array
+      total_count:
+        type: integer
+    type: object
+  entity.ProductPicture:
+    properties:
+      picture_url:
+        type: string
+      product_id:
+        type: string
+    type: object
+  entity.ProductUpt:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      price:
+        type: number
+      title:
+        type: string
+    type: object
+  entity.RegisterRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        type: string
+      phone_number:
+        type: string
+    type: object
+  entity.Session:
+    properties:
+      created_at:
+        type: string
+      expires_at:
+        type: string
+      id:
+        type: string
+      ip_address:
+        type: string
+      is_active:
+        type: boolean
+      last_active_at:
+        type: string
+      platform:
+        type: string
+      updated_at:
+        type: string
+      user_agent:
+        type: string
+      user_id:
+        type: string
+    type: object
+  entity.SessionList:
+    properties:
+      count:
+        type: integer
+      sessions:
+        items:
+          $ref: '#/definitions/entity.Session'
+        type: array
+    type: object
+  entity.SuccessResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  entity.User:
+    properties:
+      access_token:
+        description: Optional field for tokens
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      password:
+        description: Use `omitempty` to avoid exposing passwords in responses
+        type: string
+      phone_number:
+        type: string
+      updated_at:
+        type: string
+      user_role:
+        type: string
+    type: object
+  entity.UserUpdate:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      password:
+        description: Ommaviy ko‘rinmasligi uchun
+        type: string
+      phone_number:
+        type: string
+    type: object
+  entity.VerifyEmail:
+    properties:
+      email:
+        type: string
+      otp:
+        type: string
+      platform:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a sample server The Muallimah server.
+  title: The Muallimah API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: User
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Login
+      tags:
+      - auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Logout
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Logout
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register
+      parameters:
+      - description: User
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Register
+      tags:
+      - auth
+  /auth/verify-email:
+    post:
+      consumes:
+      - application/json
+      description: VerifyEmail
+      parameters:
+      - description: User
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.VerifyEmail'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: VerifyEmail
+      tags:
+      - auth
+  /basket:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a basket by its ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Basket deleted
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a basket
+      tags:
+      - basket
+    get:
+      consumes:
+      - application/json
+      description: Get all items in a specific basket
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Basket items
+          schema:
+            items:
+              $ref: '#/definitions/entity.ListBasketItem'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get the items in a basket
+      tags:
+      - basket
+  /basket/item:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a basket item by its ID
+      parameters:
+      - description: Basket ID
+        in: query
+        name: basket_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Basket item deleted
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a basket item
+      tags:
+      - basket
+    post:
+      consumes:
+      - application/json
+      description: Add an item to the basket for a user
+      parameters:
+      - description: Basket item object
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/entity.BasketItemForSwagger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.BasketResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Add an item to the basket
+      tags:
+      - basket
+  /category:
+    post:
+      consumes:
+      - application/json
+      description: Create a new category
+      parameters:
+      - description: Category object
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CategoryUptBody'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.CategoryId'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new category
+      tags:
+      - category
+  /category/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a category
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a category
+      tags:
+      - category
+    get:
+      consumes:
+      - application/json
+      description: Get a category by ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CategoryRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a category by ID
+      tags:
+      - category
+    put:
+      consumes:
+      - application/json
+      description: Update a category
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Category object
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CategoryUptBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CategoryId'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a category
+      tags:
+      - category
+  /category/list:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of categories
+      parameters:
+      - description: offset
+        in: query
+        name: page
+        required: true
+        type: number
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        type: number
+      - description: name
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CategoryListsRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a list of categories
+      tags:
+      - category
+  /order:
+    post:
+      consumes:
+      - application/json
+      description: Create a new order
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new order
+      tags:
+      - order
+    put:
+      consumes:
+      - application/json
+      description: Update an existing order
+      parameters:
+      - description: Order object
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/entity.OrderUpt'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update an existing order
+      tags:
+      - order
+  /order/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an order by ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete an order
+      tags:
+      - order
+  /order/list:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of orders with filters
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: number
+      - description: Limit per page
+        in: query
+        name: limit
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.OrderListsRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a list of orders
+      tags:
+      - order
+  /order/products:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all products associated with a specific order that have
+        been sold
+      parameters:
+      - description: Order ID
+        in: query
+        name: order_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.ProductGet'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get products in an order
+      tags:
+      - order
+  /post:
+    post:
+      consumes:
+      - application/json
+      description: Create a new post
+      parameters:
+      - description: Post object
+        in: body
+        name: post
+        required: true
+        schema:
+          $ref: '#/definitions/entity.PostCreate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.PostCreate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new post
+      tags:
+      - post
+    put:
+      consumes:
+      - application/json
+      description: Update a post
+      parameters:
+      - description: Post object
+        in: body
+        name: post
+        required: true
+        schema:
+          $ref: '#/definitions/entity.PostUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.PostUpdate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a post
+      tags:
+      - post
+  /post/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a post by ID
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a post
+      tags:
+      - post
+  /post/list:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of posts with filters
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: number
+      - description: Limit per page
+        in: query
+        name: limit
+        type: number
+      - description: Filter by post title
+        in: query
+        name: title
+        type: string
+      - description: Filter by created date (from)
+        in: query
+        name: created_from
+        type: string
+      - description: Filter by created date (to)
+        in: query
+        name: created_to
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.PostList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a list of posts
+      tags:
+      - post
+  /post/picture:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a picture URL from a post
+      parameters:
+      - description: Post picture URL
+        in: body
+        name: picture
+        required: true
+        schema:
+          $ref: '#/definitions/entity.PostPicture'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a picture from a post
+      tags:
+      - post
+    post:
+      consumes:
+      - application/json
+      description: Add a picture URL to a post
+      parameters:
+      - description: Post picture URL
+        in: body
+        name: picture
+        required: true
+        schema:
+          $ref: '#/definitions/entity.PostPicture'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.PostPicture'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Add a picture to a post
+      tags:
+      - post
+  /product:
+    post:
+      consumes:
+      - application/json
+      description: Create a new product
+      parameters:
+      - description: Product object
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/entity.ProductCreateForSwagger'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.ProductCreate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new product
+      tags:
+      - product
+    put:
+      consumes:
+      - application/json
+      description: Update a product
+      parameters:
+      - description: Product object
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/entity.ProductUpt'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ProductUpt'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a product
+      tags:
+      - product
+  /product/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a product by ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a product
+      tags:
+      - product
+  /product/list:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of products with filters
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: number
+      - description: Limit per page
+        in: query
+        name: limit
+        type: number
+      - description: Title filter
+        in: query
+        name: title
+        type: string
+      - description: Price from filter
+        in: query
+        name: price_from
+        type: number
+      - description: Price to filter
+        in: query
+        name: price_to
+        type: number
+      - description: Product type
+        in: query
+        name: type
+        required: true
+        type: string
+      - description: ' category_id'
+        in: query
+        name: category_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ProductList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a list of products
+      tags:
+      - product
+  /product/picture:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a picture URL from a product
+      parameters:
+      - description: Product picture URL
+        in: body
+        name: picture
+        required: true
+        schema:
+          $ref: '#/definitions/entity.ProductPicture'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a picture from a product
+      tags:
+      - product
+    post:
+      consumes:
+      - application/json
+      description: Add a picture URL to a product
+      parameters:
+      - description: Product picture URL
+        in: body
+        name: picture
+        required: true
+        schema:
+          $ref: '#/definitions/entity.ProductPicture'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ProductPicture'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Add a picture to a product
+      tags:
+      - product
+  /session:
+    put:
+      consumes:
+      - application/json
+      description: Update a session
+      parameters:
+      - description: Session object
+        in: body
+        name: session
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Session'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Session'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a session
+      tags:
+      - session
+  /session/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a session
+      parameters:
+      - description: Session ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a session
+      tags:
+      - session
+    get:
+      consumes:
+      - application/json
+      description: Get a session by ID
+      parameters:
+      - description: Session ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Session'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a session by ID
+      tags:
+      - session
+  /session/list:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of users
+      parameters:
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: number
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        type: number
+      - description: user_id
+        in: query
+        name: user_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SessionList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a list of users
+      tags:
+      - session
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entity.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new user
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: Update a user
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entity.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.UserUpdate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a user
+      tags:
+      - user
+  /user/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a user
+      tags:
+      - user
+    get:
+      consumes:
+      - application/json
+      description: Get a user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a user by ID
+      tags:
+      - user
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

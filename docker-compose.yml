@@ -1,0 +1,16 @@
+services:
+  app:
+    build: .
+    container_name: aura-fashion
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+    networks:
+      - aura-fashion
+
+
+networks:
+  aura-fashion: 
+    external: true
+

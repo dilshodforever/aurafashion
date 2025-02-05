@@ -1,0 +1,29 @@
+services:
+  aura-fashiondb:
+    image: postgres:latest
+    container_name: aura-fashiondb
+    environment:
+      POSTGRES_USER: aura-fashiondb
+      POSTGRES_PASSWORD: aura-fashiondb_secret
+      POSTGRES_DB: aurafashion_db
+    ports:
+      - "5437:5431"
+    volumes:
+      - postgres_database:/var/lib/postgresql/data
+    networks:
+      - aura-fashion
+
+  aura-fashion-redis:
+    image: redis:latest
+    container_name: aura-fashion-redis
+    ports:
+      - "6376:6377"
+    networks:
+      - aura-fashion
+      
+networks:
+  aura-fashion: 
+    external: true
+
+volumes:
+  postgres_database:

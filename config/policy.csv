@@ -1,0 +1,46 @@
+p, unauthorized, /swagger/*, GET
+p, unauthorized, /v1/auth/*, GET|POST
+
+p, unauthorized, /v1/user/*, PUT|DELETE
+p, unauthorized, /v1/user/:id, GET
+p, user, /v1/user/*, GET|POST|PUT|DELETE
+p, admin, /v1/user/*, GET|POST|PUT|DELETE
+
+
+
+p, user, /v1/product/*, GET|POST|PUT|DELETE
+p, user, /v1/basket/*, GET|POST|PUT|DELETE
+p, user, /v1/order/*, GET|POST|PUT|DELETE
+p, user, /v1/post/*,  GET|POST|PUT|DELETE
+p, user, /v1/session/*, GET|DELETE
+p, admin, /v1/session/*, GET|POST|PUT|DELETE
+
+p, user, /v1/category/,          POST
+p, user, /v1/category/:id,       GET
+p, user, /v1/category/list,      GET
+p, user, /v1/category/:id,       PUT
+p, user, /v1/category/:id,       DELETE
+
+p, admin, /v1/category/,          POST
+p, admin, /v1/category/:id,       GET
+p, admin, /v1/category/list,      GET
+p, admin, /v1/category/:id,       PUT
+p, admin, /v1/category/:id,       DELETE
+
+p, user, /v1/course/,          POST
+p, user, /v1/course/:id,       GET
+p, user, /v1/course/list,      GET
+p, user, /v1/course/:id,       PUT
+p, user, /v1/course/:id,       DELETE
+
+p, admin, /v1/course/,          POST
+p, admin, /v1/course/:id,       GET
+p, admin, /v1/course/list,      GET
+p, admin, /v1/course/:id,       PUT
+p, admin, /v1/course/:id,       DELETE
+
+p, user, /v1/teacher/*, GET|POST|PUT|DELETE
+p, admin, /v1/teacher/*, GET|POST|PUT|DELETE
+
+g, user, unauthorized
+g, admin, user

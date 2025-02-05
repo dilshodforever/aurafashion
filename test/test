@@ -1,0 +1,35 @@
+-- Table for storing books
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,              -- Unique identifier for each book
+    title VARCHAR(255) NOT NULL,        -- Book title
+    description TEXT NOT NULL,          -- Book description
+    price NUMERIC(10, 2) NOT NULL,      -- Price of the book
+    created_at TIMESTAMP DEFAULT NOW()  -- Timestamp when the book is created
+);
+
+-- Table for storing book pictures
+CREATE TABLE book_pictures (
+    id SERIAL PRIMARY KEY,              -- Unique identifier for each picture
+    book_id INT NOT NULL,               -- Foreign key referencing the books table
+    picture_url TEXT NOT NULL,          -- URL of the picture
+    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
+);
+
+
+
+
+CREATE TABLE posts (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT NULL
+);
+
+CREATE TABLE post_pictures (
+    id SERIAL PRIMARY KEY,
+    post_id INT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    picture_url TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
