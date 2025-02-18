@@ -152,7 +152,7 @@ func (h *Handler) ListOrders(ctx *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param order_id query string true "Order ID"
-// @Success 200 {array} entity.ProductGet
+// @Success 200 {array} entity.ProductResponse
 // @Failure 400 {object} entity.ErrorResponse
 // @Failure 500 {object} entity.ErrorResponse
 func (h *Handler) SeeOrderProducts(ctx *gin.Context) {

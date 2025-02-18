@@ -44,3 +44,8 @@ type BasketDelete struct{
 }
 
 
+type BasketProductPrice struct{
+	Price          float64  `json:"price"`
+	DiscountPrice  float64  `json:"discount_price"`
+	FinalPrice     float64  `json:"final_price"`
+}

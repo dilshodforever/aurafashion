@@ -33,8 +33,9 @@ func (h *Handler) AuthMiddleware(e *casbin.Enforcer) gin.HandlerFunc {
 			if err != nil {
 				userRole = "unauthorized"
 			}
-
+			
 			v, ok := claims["user_role"].(string)
+			
 			if !ok {
 				userRole = "unauthorized"
 			} else {

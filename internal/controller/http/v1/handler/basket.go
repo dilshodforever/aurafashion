@@ -108,7 +108,7 @@ func (h *Handler) DeleteBasketItem(ctx *gin.Context) {
 }
 
 // GetBasket godoc
-// @Router /basket [get]
+// @Router /basket/get [get]
 // @Summary Get the items in a basket
 // @Description Get all items in a specific basket
 // @Security BearerAuth

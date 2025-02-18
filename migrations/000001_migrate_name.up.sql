@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS products (
     price NUMERIC(10, 2) NOT NULL CHECK (price >= 0),
     product_size varchar(50),
     color  varchar(50),
-    SalePrice  NUMERIC(10, 2),
+    sale_price  NUMERIC(10, 2),
     category_id UUID NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW(),

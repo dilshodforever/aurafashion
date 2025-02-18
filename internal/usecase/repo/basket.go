@@ -2,6 +2,7 @@ package repo
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"strings"
 	"time"
@@ -38,7 +39,7 @@ func (r *BasketRepo) AddBasketItem(ctx context.Context, item *entity.BasketItem)
 	}
 
 	// Calculate total price for the item
-	item.Price = price * float64(item.Count)
+	item.Price = price.FinalPrice * float64(item.Count)
 
 	// Insert the basket item into the database
 	query := `INSERT INTO basket_items (id, product_id, user_id, price, count, status)
@@ -92,19 +93,32 @@ func (r *BasketRepo) DeleteBasket(ctx context.Context, basket entity.BasketDelet
 	return nil
 }
 
-func (r *BasketRepo) GetProductPrice(ctx context.Context, Productid string) (float64, error) {
-	var product_price float64
+func (r *BasketRepo) GetProductPrice(ctx context.Context, ProductID string) (*entity.BasketProductPrice, error) {
+	var product entity.BasketProductPrice
+	var discount sql.NullFloat64 // NULL bo‘lishi mumkin
+
 	query := `
-			SELECT  price
+			SELECT price, sale_price
 			FROM products
 			WHERE id = $1 AND deleted_at IS NULL
 		`
-	err := r.db.Pool.QueryRow(ctx, query, Productid).
-		Scan(&product_price)
+	err := r.db.Pool.QueryRow(ctx, query, ProductID).
+		Scan(&product.Price, &discount)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
-	return product_price, nil
+
+	// Agar discount (sale_price) NULL bo‘lsa, 0 deb olinadi
+	if discount.Valid {
+		product.DiscountPrice = discount.Float64
+	} else {
+		product.DiscountPrice = 0.0
+	}
+
+	// Yakuniy narx hisoblash
+	product.FinalPrice = product.Price - (product.Price * product.DiscountPrice / 100)
+
+	return &product, nil
 }
 
 func (r *BasketRepo) GetBasket(ctx context.Context, userid string) (*entity.ListBasketItem, error) {

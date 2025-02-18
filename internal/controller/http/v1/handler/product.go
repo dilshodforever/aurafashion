@@ -111,7 +111,6 @@ func (h *Handler) DeleteProduct(ctx *gin.Context) {
 // @Param title query string false "Title filter"
 // @Param price_from query number false "Price from filter"
 // @Param price_to query number false "Price to filter"
-// @Param type query string true "Product type"
 // @Param category_id query string false " category_id"
 // @Success 200 {object} entity.ProductList
 // @Failure 400 {object} entity.ErrorResponse
@@ -125,7 +124,6 @@ func (h *Handler) ListProducts(ctx *gin.Context) {
 	title := ctx.DefaultQuery("title", "")
 	priceFrom := ctx.DefaultQuery("price_from", "0")
 	priceTo := ctx.DefaultQuery("price_to", "0")
-	req.PrType=ctx.Query("type")
 	req.Category_id=ctx.Query("category_id")
 	req.Pagination.Page, _ = strconv.Atoi(page)
 	req.Pagination.Limit, _ = strconv.Atoi(limit)

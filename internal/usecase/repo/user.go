@@ -52,7 +52,7 @@ func (r *UserRepo) GetSingle(ctx context.Context, req entity.UserSingleRequest) 
 	var createdAt, updatedAt time.Time
 	
 	queryBuilder := r.pg.Builder.
-		Select(`id, first_name, last_name, email,  password,  phone_number,created_at, updated_at`).
+		Select(`id, first_name, last_name, email,  password,  phone_number,user_role,created_at, updated_at`).
 		From("users")
 
 	switch {
@@ -70,10 +70,10 @@ func (r *UserRepo) GetSingle(ctx context.Context, req entity.UserSingleRequest) 
 	if err != nil {
 		return entity.User{}, err
 	}
-
+	
 	err = r.pg.Pool.QueryRow(ctx, query, args...).
 		Scan(&response.ID, &response.FirstName,  &response.LastName, &response.Email, &response.Password,
-			&response.PhoneNumber, &createdAt, &updatedAt)
+			&response.PhoneNumber, &response.UserRole,&createdAt, &updatedAt)
 	if err != nil {
 		return entity.User{}, err
 	}

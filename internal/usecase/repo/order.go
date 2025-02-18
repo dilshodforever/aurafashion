@@ -199,8 +199,8 @@ func (r *OrderRepo) GetOrder(ctx context.Context, req *entity.OrderGetReq) (*ent
 }
 
 // ListOrders retrieves a list of orders based on the given filter
-func (r *OrderRepo) SeeOrderProducts(ctx context.Context, orderid string) ([]*entity.ProductGet, error) {
-	var products []*entity.ProductGet
+func (r *OrderRepo) SeeOrderProducts(ctx context.Context, orderid string) ([]*entity.ProductResponse, error) {
+	var products []*entity.ProductResponse
 	query := `
 		SELECT p.id, p.title, p.description, p.price 
 		FROM basket_items b
@@ -215,12 +215,12 @@ func (r *OrderRepo) SeeOrderProducts(ctx context.Context, orderid string) ([]*en
 	defer rows.Close()
 
 	for rows.Next() {
-		var product entity.ProductGet
-		err := rows.Scan(&product.Id, &product.Title, &product.Description, &product.Price)
+		var product entity.ProductResponse
+		err := rows.Scan(&product.ID, &product.Title, &product.Description, &product.Price)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan row: %w", err)
 		}
-		pictures, err := ListPictures(ctx, r.db, product.Id)
+		pictures, err := ListPictures(ctx, r.db, product.ID)
 		if err != nil {
 			return nil, fmt.Errorf("filed in list pictures: %w", err)
 		}

@@ -151,6 +151,46 @@ const docTemplate = `{
             }
         },
         "/basket": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a basket by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "basket"
+                ],
+                "summary": "Delete a basket",
+                "responses": {
+                    "200": {
+                        "description": "Basket deleted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/entity.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/entity.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/basket/get": {
             "get": {
                 "security": [
                     {
@@ -176,44 +216,6 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/entity.ListBasketItem"
                             }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/entity.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/entity.ErrorResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Delete a basket by its ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "basket"
-                ],
-                "summary": "Delete a basket",
-                "responses": {
-                    "200": {
-                        "description": "Basket deleted",
-                        "schema": {
-                            "type": "string"
                         }
                     },
                     "400": {
@@ -722,7 +724,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/entity.ProductGet"
+                                "$ref": "#/definitions/entity.ProductResponse"
                             }
                         }
                     },
@@ -920,13 +922,6 @@ const docTemplate = `{
                         "description": "Price to filter",
                         "name": "price_to",
                         "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Product type",
-                        "name": "type",
-                        "in": "query",
-                        "required": true
                     },
                     {
                         "type": "string",
@@ -1666,44 +1661,6 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.ProductGet": {
-            "type": "object",
-            "properties": {
-                "color": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "picture_urls": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "price": {
-                    "type": "number"
-                },
-                "sale_price": {
-                    "type": "number"
-                },
-                "size": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
         "entity.ProductList": {
             "type": "object",
             "properties": {
@@ -1713,7 +1670,7 @@ const docTemplate = `{
                 "products": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/entity.ProductGet"
+                        "$ref": "#/definitions/entity.ProductResponse"
                     }
                 },
                 "total_count": {
@@ -1728,6 +1685,47 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "product_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.ProductResponse": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "discount_price": {
+                    "type": "number"
+                },
+                "final_price": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image_urls": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "price": {
+                    "type": "number"
+                },
+                "size": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }

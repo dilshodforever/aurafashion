@@ -38,17 +38,18 @@ type ProductPicture struct {
 	PictureUrl string `json:"picture_url"`
 }
 
-type ProductGet struct {
-	Id          string  `json:"id"`
-	Title       string  `json:"title"`
-	Description string  `json:"description"`
-	Price       float64 `json:"price"`
-	SalePrice   float64 `json:"sale_price"`
-	Color       string  `json:"color"`
-	Size        string  `json:"size"`
-	PictureUrls []string`json:"picture_urls"`
-	CreatedAt   string  `json:"created_at"`
-	UpdatedAt   string  `json:"updated_at"`
+type ProductResponse struct {
+	ID             string   `json:"id"`
+	Title          string   `json:"title"`
+	Description    string   `json:"description"`
+	Price          float64  `json:"price"`
+	DiscountPrice  float64  `json:"discount_price"`
+	FinalPrice     float64  `json:"final_price"`
+	Color          string   `json:"color"`
+	Size           string   `json:"size"`
+	PictureUrls      []string `json:"image_urls"`
+	CreatedAt      string   `json:"created_at"`
+	UpdatedAt      string   `json:"updated_at"`
 }
 
 type ProductFilter struct {
@@ -57,11 +58,10 @@ type ProductFilter struct {
 	PriceTo     float64    `json:"price_to"`
 	Pagination  Pagination `json:"pagination"`
 	Category_id string     `json:"category_id"`
-	PrType      string     `json:"type"`
 }
 
 type ProductList struct {
-	Products   []*ProductGet `json:"products"`
+	Products   []*ProductResponse `json:"products"`
 	TotalCount int           `json:"total_count"`
 	Pagination Pagination    `json:"pagination"`
 }

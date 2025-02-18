@@ -15,7 +15,7 @@ p, user, /v1/post/*,  GET|POST|PUT|DELETE
 p, user, /v1/session/*, GET|DELETE
 p, admin, /v1/session/*, GET|POST|PUT|DELETE
 
-p, user, /v1/category/,          POST
+p, user, /v1/category,          POST
 p, user, /v1/category/:id,       GET
 p, user, /v1/category/list,      GET
 p, user, /v1/category/:id,       PUT

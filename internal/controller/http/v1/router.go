@@ -77,7 +77,7 @@ func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useC
 
 	{
 		v1.POST("/product/", handlerV1.CreateProduct)
-		v1.PUT("/product", handlerV1.UpdateProduct)
+		v1.PUT("/product/", handlerV1.UpdateProduct)
 		v1.DELETE("/product/:id", handlerV1.DeleteProduct)
 		v1.GET("/product/list", handlerV1.ListProducts)
 		//product.GET("/product/:id", handlerV1.GetProduct)
@@ -90,7 +90,7 @@ func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useC
 		v1.POST("/basket/item", handlerV1.AddBasketItem)
 		v1.DELETE("/basket/", handlerV1.DeleteBasket)
 		v1.DELETE("/basket/item", handlerV1.DeleteBasketItem)
-		v1.GET("/basket", handlerV1.GetBasket)
+		v1.GET("/basket/get", handlerV1.GetBasket)
 	}
 
 	

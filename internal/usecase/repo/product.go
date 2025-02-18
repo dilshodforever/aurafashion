@@ -2,6 +2,7 @@ package repo
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"fmt"
 	"time"
@@ -64,19 +65,19 @@ func (r *ProductRepo) UpdateProduct(ctx context.Context, product *entity.Product
 		args = append(args, product.Size)
 		argID++
 	}
-	
+
 	if product.SalePrice != 0 {
 		query += fmt.Sprintf("sale_price = $%d, ", argID)
 		args = append(args, product.SalePrice)
 		argID++
 	}
-	
+
 	if product.Color != "" {
 		query += fmt.Sprintf("color = $%d, ", argID)
 		args = append(args, product.Color)
 		argID++
 	}
-	
+
 	if product.Price != 0.0 {
 		query += fmt.Sprintf("price = $%d, ", argID)
 		args = append(args, product.Price)
@@ -122,16 +123,16 @@ func (r *ProductRepo) DeleteProduct(ctx context.Context, Productid string) error
 }
 
 func (r *ProductRepo) ListProducts(ctx context.Context, filter *entity.ProductFilter) (*entity.ProductList, error) {
-	var products []*entity.ProductGet
+	var products []*entity.ProductResponse
 	var totalCount int
 
 	query := `
 			SELECT id, title, description, price, sale_price, color, product_size,created_at, updated_at
 			FROM products
-			WHERE deleted_at IS NULL AND product_type = $1
+			WHERE deleted_at IS NULL
 		`
-	args := []interface{}{filter.PrType}
-	paramIdx := 2 // Parametr indeksini boshidan belgilaymiz
+	args := []interface{}{}
+	paramIdx := 1 // Parametr indeksini boshidan belgilaymiz
 
 	if filter.Title != "" {
 		query += fmt.Sprintf(" AND title ILIKE $%d", paramIdx)
@@ -172,16 +173,22 @@ func (r *ProductRepo) ListProducts(ctx context.Context, filter *entity.ProductFi
 	defer rows.Close()
 
 	for rows.Next() {
-		var product entity.ProductGet
+		var product entity.ProductResponse
 		var createdAt, updatedAt time.Time
+		var discount sql.NullFloat64
 
-		err := rows.Scan(&product.Id, &product.Title, &product.Description, &product.Price, 
-			&product.SalePrice, &product.Color, &product.Size,&createdAt, &updatedAt)
+		err := rows.Scan(&product.ID, &product.Title, &product.Description, &product.Price,
+			&product.DiscountPrice, &product.Color, &product.Size, &createdAt, &updatedAt)
 		if err != nil {
 			return nil, err
 		}
-
-		product.PictureUrls, err = ListPictures(ctx, r.db, product.Id)
+		if discount.Valid {
+			product.DiscountPrice = discount.Float64
+		} else {
+			product.DiscountPrice = 0.0
+		}
+		product.FinalPrice = product.Price - (product.Price * product.DiscountPrice / 100)
+		product.PictureUrls, err = ListPictures(ctx, r.db, product.ID)
 		if err != nil {
 			return nil, fmt.Errorf("filed in listpicture: %w", err)
 		}
@@ -192,8 +199,8 @@ func (r *ProductRepo) ListProducts(ctx context.Context, filter *entity.ProductFi
 
 	}
 
-	queryTotal := `SELECT COUNT(*) FROM products WHERE deleted_at IS NULL and product_type = $1 `
-	err = r.db.Pool.QueryRow(ctx, queryTotal, filter.PrType).Scan(&totalCount)
+	queryTotal := `SELECT COUNT(*) FROM products WHERE deleted_at IS NULL `
+	err = r.db.Pool.QueryRow(ctx, queryTotal).Scan(&totalCount)
 	if err != nil {
 		return nil, err
 	}
@@ -205,20 +212,28 @@ func (r *ProductRepo) ListProducts(ctx context.Context, filter *entity.ProductFi
 	}, nil
 }
 
-func (r *ProductRepo) GetProduct(ctx context.Context, Productid string) (*entity.ProductGet, error) {
-	var product entity.ProductGet
+func (r *ProductRepo) GetProduct(ctx context.Context, Productid string) (*entity.ProductResponse, error) {
+	var product entity.ProductResponse
 	var createdAt, updatedAt time.Time
+	var discount sql.NullFloat64
 	query := `
-			SELECT id, title, description, price,  created_at, updated_at
+			SELECT id, title, description, price, sale_price, color, product_size,created_at, updated_at
 			FROM products
 			WHERE id = $1 AND deleted_at IS NULL
 		`
 	err := r.db.Pool.QueryRow(ctx, query, Productid).
-		Scan(&product.Id, &product.Title, &product.Description, &product.Price, &createdAt, &updatedAt)
+		Scan(&product.ID, &product.Title, &product.Description, &product.Price, &discount, product.Color,
+			&product.Size, &createdAt, &updatedAt)
 	if err != nil {
 		return nil, err
 	}
-	product.PictureUrls, err = ListPictures(ctx, r.db, product.Id)
+	if discount.Valid {
+		product.DiscountPrice = discount.Float64
+	} else {
+		product.DiscountPrice = 0.0
+	}
+	product.FinalPrice = product.Price - (product.Price * product.DiscountPrice / 100)
+	product.PictureUrls, err = ListPictures(ctx, r.db, product.ID)
 	if err != nil {
 		return nil, fmt.Errorf("filed in listproduct: %w", err)
 	}

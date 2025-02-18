@@ -265,14 +265,13 @@ func (h *Handler) VerifyEmail(ctx *gin.Context) {
 	if h.HandleDbError(ctx, err, "Error while creating new session") {
 		return
 	}
-	fmt.Println(1111,user.UserRole)
+	
 	// generate jwt token
 	jwtFields := map[string]interface{}{
 		"sub":        user.ID,
 		"user_role":  user.UserRole,
 		"session_id": session.ID,
 	}
-
 
 	user.AccessToken, err = jwt.GenerateJWT(jwtFields, h.Config.JWT.Secret)
 	if err != nil {

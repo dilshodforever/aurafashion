@@ -35,7 +35,7 @@ type (
 		UpdateProduct(ctx context.Context, book *entity.ProductUpt) error
 		DeleteProduct(ctx context.Context, bookID string) error
 		ListProducts(ctx context.Context, filter *entity.ProductFilter) (*entity.ProductList, error)
-		GetProduct(ctx context.Context, bookID string) (*entity.ProductGet, error)
+		GetProduct(ctx context.Context, bookID string) (*entity.ProductResponse, error)
 		AddPicture(ctx context.Context, picture *entity.ProductPicture) error
 		DeletePicture(ctx context.Context, picture *entity.ProductPicture) error
 	}
@@ -46,7 +46,7 @@ type (
 		DeleteOrder(ctx context.Context, orderID string) error
 		ListOrders(ctx context.Context, req *entity.OrderListsReq) (*entity.OrderListsRes, error)
 		GetOrder(ctx context.Context, req *entity.OrderGetReq) (*entity.OrderGetRes, error)
-		SeeOrderProducts(ctx context.Context, orderid string) ([]*entity.ProductGet, error)
+		SeeOrderProducts(ctx context.Context, orderid string) ([]*entity.ProductResponse, error)
 	}
 
 
