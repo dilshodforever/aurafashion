@@ -40,8 +40,8 @@ p, admin, /v1/course/:id,       PUT
 p, admin, /v1/course/:id,       DELETE
 
 
-p, user, /minio/media,       POST
-p, admin, /minio/media,       POST
+p, user, /v1/minio/media,       POST
+p, admin, /v1/minio/media,       POST
 
 p, user, /v1/teacher/*, GET|POST|PUT|DELETE
 p, admin, /v1/teacher/*, GET|POST|PUT|DELETE
