@@ -109,5 +109,5 @@ func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useC
 		v1.PUT("/category/:id", handlerV1.UpdateCategory)
 		v1.DELETE("/category/:id", handlerV1.DeleteCategory)
 	}
-
+	v1.POST("/minio/media", handlerV1.Media)
 }
