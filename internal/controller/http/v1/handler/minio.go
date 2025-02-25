@@ -73,8 +73,7 @@ func (h *Handler) Media(c *gin.Context) {
 		fmt.Println("Failed to delete local file:", err)
 	}
 	// URL yaratish
-	madeUrl := fmt.Sprintf("https://aura.dilshodforever.uz/photos/%s", newFile)
+	madeUrl := fmt.Sprintf("https://image.dilshodforever.uz/photos/%s", newFile)
 	fmt.Println("url: ", madeUrl)
 	c.JSON(201, gin.H{"url": madeUrl})
 }
-
