@@ -6,6 +6,7 @@ import (
 	"github.com/casbin/casbin"
 	"github.com/gin-contrib/cors" // Import the CORS package
 	"github.com/gin-gonic/gin"
+	"github.com/minio/minio-go/v7"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -29,12 +30,12 @@ import (
 // @securityDefinitions.apikey BearerAuth
 // @in header
 // @name Authorization
-func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useCase *usecase.UseCase, redis rediscache.RedisCache) {
+func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useCase *usecase.UseCase, redis rediscache.RedisCache, MinIO *minio.Client) {
 	// Options
 	engine.Use(gin.Logger())
 	engine.Use(gin.Recovery())
 
-	handlerV1 := handler.NewHandler(l, config, useCase, redis)
+	handlerV1 := handler.NewHandler(l, config, useCase, redis,MinIO)
 
 	// Initialize Casbin enforcer
 
@@ -85,7 +86,6 @@ func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useC
 		v1.DELETE("/product/picture", handlerV1.DeletePicture)
 	}
 
-	
 	{
 		v1.POST("/basket/item", handlerV1.AddBasketItem)
 		v1.DELETE("/basket/", handlerV1.DeleteBasket)
@@ -93,7 +93,6 @@ func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useC
 		v1.GET("/basket/get", handlerV1.GetBasket)
 	}
 
-	
 	{
 		v1.POST("/order", handlerV1.CreateOrder)
 		v1.PUT("/order", handlerV1.UpdateOrder)
@@ -102,7 +101,7 @@ func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useC
 		//order.GET("/order/:id", handlerV1.GetOrder)
 		v1.GET("/order/products", handlerV1.SeeOrderProducts)
 	}
-	
+
 	{
 		v1.POST("/category", handlerV1.CreateCategory)
 		v1.GET("/category/:id", handlerV1.GetCategory)

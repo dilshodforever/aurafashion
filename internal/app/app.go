@@ -8,6 +8,8 @@ import (
 	"syscall"
 
 	"github.com/gin-gonic/gin"
+	"github.com/minio/minio-go/v7"
+	"github.com/minio/minio-go/v7/pkg/credentials"
 
 	"aura-fashion/config"
 	v1 "aura-fashion/internal/controller/http/v1"
@@ -22,7 +24,7 @@ import (
 // Run creates objects via constructors.
 func Run(cfg *config.Config) {
 	l := logger.New(cfg.Log.Level)
-	
+
 	// Repository
 	pg, err := postgres.New(cfg.PG.URL, postgres.MaxPoolSize(cfg.PG.PoolMax))
 	if err != nil {
@@ -41,19 +43,26 @@ func Run(cfg *config.Config) {
 	if err != nil {
 		l.Fatal(fmt.Errorf("app - Run - rediscache.New: %w", err))
 	}
-	
+
+	minioClient, err := minio.New("minio:9000", &minio.Options{
+		Creds:  credentials.NewStaticV4("dilshod", "umarov05@", ""),
+		Secure: false,
+	})
+	if err != nil {
+		l.Fatal("Error while connecting to MinIO: ", err.Error())
+	}
 	// HTTP Server
 	handler := gin.New()
-	v1.NewRouter(handler, l, cfg, useCase, redis)
-	
+	v1.NewRouter(handler, l, cfg, useCase, redis,minioClient)
+
 	httpServer := httpserver.New(handler, httpserver.Port(cfg.HTTP.Port))
-	
+
 	l.Info(fmt.Sprintf("app - Run - httpServer: %s", cfg.HTTP.Port))
-	
+
 	// Waiting signal
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
-	
+
 	select {
 	case s := <-interrupt:
 		l.Info("app - Run - signal: " + s.String())
@@ -62,10 +71,10 @@ func Run(cfg *config.Config) {
 	}
 
 	// Shutdown
-	
+
 	err = httpServer.Shutdown()
 	if err != nil {
 		l.Error(fmt.Errorf("app - Run - httpServer.Shutdown: %w", err))
 	}
-	
+
 }

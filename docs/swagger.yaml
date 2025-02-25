@@ -698,6 +698,33 @@ paths:
       summary: Get a list of categories
       tags:
       - category
+  /minio/media:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload a media file
+      parameters:
+      - description: UploadMediaForm
+        in: formData
+        name: file
+        required: true
+        type: file
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: uploadFile
+      tags:
+      - media
   /order:
     post:
       consumes:
