@@ -892,33 +892,6 @@ paths:
       summary: Create a new product
       tags:
       - product
-    put:
-      consumes:
-      - application/json
-      description: Update a product
-      parameters:
-      - description: Product object
-        in: body
-        name: product
-        required: true
-        schema:
-          $ref: '#/definitions/entity.ProductUpt'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.ProductUpt'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/entity.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update a product
-      tags:
-      - product
   /product/{id}:
     delete:
       consumes:
@@ -944,6 +917,38 @@ paths:
       security:
       - BearerAuth: []
       summary: Delete a product
+      tags:
+      - product
+    put:
+      consumes:
+      - application/json
+      description: Update a product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Product object
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/entity.ProductUpt'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ProductUpt'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a product
       tags:
       - product
   /product/list:
