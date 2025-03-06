@@ -41,13 +41,14 @@ func (h *Handler) CreateProduct(ctx *gin.Context) {
 }
 
 // UpdateProduct godoc
-// @Router /product [put]
+// @Router /product/{id} [put]
 // @Summary Update a product
 // @Description Update a product
 // @Security BearerAuth
 // @Tags product
 // @Accept  json
 // @Produce  json
+// @Param id path string true "Product ID"
 // @Param product body entity.ProductUpt true "Product object"
 // @Success 200 {object} entity.ProductUpt
 // @Failure 400 {object} entity.ErrorResponse
@@ -55,13 +56,16 @@ func (h *Handler) UpdateProduct(ctx *gin.Context) {
 	var (
 		body entity.ProductUpt
 	)
+	var (
+		productID = ctx.Param("id")
+	)
 
 	err := ctx.ShouldBindJSON(&body)
 	if err != nil {
 		h.ReturnError(ctx, config.ErrorBadRequest, "Invalid request body", 400)
 		return
 	}
-
+	body.Id=productID
 	err = h.UseCase.ProductRepo.UpdateProduct(ctx, &body)
 	if err != nil {
 		h.HandleDbError(ctx, err, "Error updating product")
