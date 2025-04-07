@@ -63,7 +63,7 @@ func NewRouter(engine *gin.Engine, l *logger.Logger, config *config.Config, useC
 	// Routes
 	v1 := engine.Group("/v1")
 	
-	v1.POST("/webhook", handlerV1.WebhookHandler)
+	v1.GET("/webhook", handlerV1.WebhookHandler)
 	{
 		//v1.GET("/user/list", handlerV1.GetUsers)
 		v1.GET("/user/:id", handlerV1.GetUser)
