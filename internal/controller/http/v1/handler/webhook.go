@@ -43,7 +43,7 @@ func (h Handler) WebhookHandler(c *gin.Context) {
 	// Agar mode 'subscribe' bo'lsa, challenge qaytarish
 	if mode == "subscribe" {
 		fmt.Println("resp in subscribe")
-		c.JSON(http.StatusOK, gin.H{"hub.challenge": challenge})
+		c.JSON(http.StatusOK, gin.H{"status": "success"})
 		return
 	}
 
