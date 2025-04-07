@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+
 // Webhook payload structure
 type WebhookEvent struct {
 	Object string `json:"object"`
@@ -26,43 +27,62 @@ type WebhookEvent struct {
 	} `json:"entry"`
 }
 
-func (h Handler) WebhookHandler(ctx *gin.Context) {
-	var event WebhookEvent
-	// Decode the incoming JSON payload
-	if err := ctx.ShouldBindJSON(&event); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+// WebhookHandler - Webhookni tasdiqlash va xabarni qaytarish
+func (h Handler) WebhookHandler(c *gin.Context) {
+	// Webhook verification uchun GET so'rovini tekshirish
+	mode := c.DefaultQuery("hub.mode", "")
+	challenge := c.DefaultQuery("hub.challenge", "")
+	verifyToken := c.DefaultQuery("hub.verify_token", "")
+
+	// Verification tokenni tekshirish
+	if verifyToken != "12345" { // 'your-verify-token'ni o'z tokeningiz bilan almashtiring
+		c.JSON(http.StatusForbidden, gin.H{"message": "Invalid verify token"})
 		return
 	}
 
-	// Process each message received from Instagram
+	// Agar mode 'subscribe' bo'lsa, challenge qaytarish
+	if mode == "subscribe" {
+		c.JSON(http.StatusOK, gin.H{"hub.challenge": challenge})
+		return
+	}
+
+	// POST so'rovini olish va xabarlarni qayta ishlash
+	var event WebhookEvent
+	if err := c.ShouldBindJSON(&event); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	// Instagramdan kelgan xabarlarni qayta ishlash
 	for _, entry := range event.Entry {
 		for _, messaging := range entry.Messaging {
-			// If a message is received, respond with "Please wait..."
+			// Agar xabar kelgan bo'lsa, "Iltimos ozroq kuting..." deb javob berish
 			if messaging.Message.Text != "" {
-				// Call function to respond to Instagram
+				// Instagramga javob yuborish
 				RespondToInstagram(messaging.Sender.ID, "Iltimos ozroq kuting...")
 			}
 		}
 	}
 
-	// Respond back with OK status
-	ctx.JSON(http.StatusOK, gin.H{"status": "success"})
+	// OK javobini qaytarish
+	c.JSON(http.StatusOK, gin.H{"status": "success"})
 }
 
+// RespondToInstagram - Instagramga xabar yuborish
 func RespondToInstagram(userID, message string) {
-	// Your access token
+	// O'zingizning access tokeningizni qo'shing
 	accessToken := "IGAAJ9eVGFRoNBZAE1DRG5wOHptejQwRE1TczV3SWdaMjhZAM1FQMFk3QWdyNldjVXVCV3BydmF5eU40TnBrc19PTGVrMjBsNnhKc25vS2dBTlZAFTElQRUt1M1hLS2xPUGEyWjdMM0E0bkY3cTdwajVxRnZAEN0dpZAVBUYlFGbG1DYwZDZD"
 
-	// Instagram API URL for sending messages
+	// Instagram API URL
 	url := fmt.Sprintf("https://graph.facebook.com/v12.0/me/messages?access_token=%s", accessToken)
 
-	// Prepare message payload
+	// Xabarni yuborish uchun payload
 	payload := fmt.Sprintf(`{
 		"recipient": {"id": "%s"},
 		"message": {"text": "%s"}
 	}`, userID, message)
 
-	// Create a new HTTP client and send the POST request to the Instagram API
+	// HTTP client yaratish va so'rov yuborish
 	client := &http.Client{}
 	req, err := http.NewRequest("POST", url, strings.NewReader(payload))
 	if err != nil {
