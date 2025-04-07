@@ -9,7 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
 // Webhook payload structure
 type WebhookEvent struct {
 	Object string `json:"object"`
@@ -31,7 +30,7 @@ type WebhookEvent struct {
 func (h Handler) WebhookHandler(c *gin.Context) {
 	// Webhook verification uchun GET so'rovini tekshirish
 	mode := c.DefaultQuery("hub.mode", "")
-	challenge := c.DefaultQuery("hub.challenge", "")
+	// challenge := c.DefaultQuery("hub.challenge", "")
 	verifyToken := c.DefaultQuery("hub.verify_token", "")
 
 	// Verification tokenni tekshirish
