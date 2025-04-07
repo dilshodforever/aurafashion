@@ -30,7 +30,7 @@ type WebhookEvent struct {
 func (h Handler) WebhookHandler(c *gin.Context) {
 	// Webhook verification uchun GET so'rovini tekshirish
 	mode := c.DefaultQuery("hub.mode", "")
-	// challenge := c.DefaultQuery("hub.challenge", "")
+	challenge := c.DefaultQuery("hub.challenge", "") // Getting challenge parameter
 	verifyToken := c.DefaultQuery("hub.verify_token", "")
 
 	// Verification tokenni tekshirish
@@ -41,8 +41,8 @@ func (h Handler) WebhookHandler(c *gin.Context) {
 
 	// Agar mode 'subscribe' bo'lsa, challenge qaytarish
 	if mode == "subscribe" {
-		fmt.Println("resp in subscribe")
-		c.JSON(http.StatusOK, gin.H{"status": "success"})
+		// Instagram verification request, return the challenge parameter to confirm webhook
+		c.String(http.StatusOK, challenge)
 		return
 	}
 
